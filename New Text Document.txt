@@ -1,0 +1,122 @@
+/*
+SQLyog Community v13.1.9 (64 bit)
+MySQL - 5.5.16 : Database - splendid_soirees
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`splendid_soirees` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `splendid_soirees`;
+
+/*Table structure for table `auditoriums` */
+
+DROP TABLE IF EXISTS `auditoriums`;
+
+CREATE TABLE `auditoriums` (
+  `audi_id` int(12) NOT NULL AUTO_INCREMENT,
+  `audi_name` varchar(100) NOT NULL,
+  `audi_venue` longtext NOT NULL,
+  `audi_capacity` varchar(12) NOT NULL,
+  `audi_refreshments` longtext,
+  `audi_cost` varchar(12) NOT NULL,
+  `audi_contact_number` varchar(12) NOT NULL,
+  `audi_emailid` varchar(50) NOT NULL,
+  `audi_legal_paper` varchar(100) NOT NULL,
+  `audi_verification` varchar(3) NOT NULL DEFAULT 'no',
+  `audi_picture` varchar(200) DEFAULT NULL,
+  `place_id` int(12) NOT NULL,
+  `audi_cost_student` varchar(12) NOT NULL,
+  PRIMARY KEY (`audi_id`),
+  KEY `place_id` (`place_id`),
+  CONSTRAINT `auditoriums_ibfk_1` FOREIGN KEY (`place_id`) REFERENCES `user` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+
+/*Data for the table `auditoriums` */
+
+insert  into `auditoriums`(`audi_id`,`audi_name`,`audi_venue`,`audi_capacity`,`audi_refreshments`,`audi_cost`,`audi_contact_number`,`audi_emailid`,`audi_legal_paper`,`audi_verification`,`audi_picture`,`place_id`,`audi_cost_student`) values 
+(35,'Acropolis Institute of Technology and Research, Indore ','mangliya','500','idli,dosa','5000','9826055279','aitr@gmail.com','Screenshot (2).png','yes','Screenshot (6).png',59,'100');
+
+/*Table structure for table `event` */
+
+DROP TABLE IF EXISTS `event`;
+
+CREATE TABLE `event` (
+  `event_id` int(12) NOT NULL AUTO_INCREMENT,
+  `event_name` varchar(100) NOT NULL,
+  `inst_name` varchar(150) NOT NULL,
+  `event_content` longtext NOT NULL,
+  `event_date_from` date NOT NULL,
+  `event_time_from` time NOT NULL,
+  `event_capacity` int(12) NOT NULL,
+  `event_refreshments` varchar(3) DEFAULT NULL,
+  `event_date_to` date NOT NULL,
+  `event_time_to` time NOT NULL,
+  `event_pic` varchar(200) NOT NULL DEFAULT 'event_ready.jpg',
+  `audi_id` int(12) NOT NULL,
+  `event_permission` varbinary(3) NOT NULL DEFAULT 'no',
+  `place_id` int(12) NOT NULL,
+  PRIMARY KEY (`event_id`),
+  KEY `inst_id` (`inst_name`),
+  KEY `audi_id` (`audi_id`),
+  KEY `place_id` (`place_id`),
+  CONSTRAINT `event_ibfk_2` FOREIGN KEY (`place_id`) REFERENCES `user` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1;
+
+/*Data for the table `event` */
+
+insert  into `event`(`event_id`,`event_name`,`inst_name`,`event_content`,`event_date_from`,`event_time_from`,`event_capacity`,`event_refreshments`,`event_date_to`,`event_time_to`,`event_pic`,`audi_id`,`event_permission`,`place_id`) values 
+(69,'viva','Mar Thoma Higher Secondary School','internal','2022-11-26','16:00:00',200,'yes','2022-11-26','05:00:00','Screenshot (6).png',59,'yes',59);
+
+/*Table structure for table `notification` */
+
+DROP TABLE IF EXISTS `notification`;
+
+CREATE TABLE `notification` (
+  `n_id` int(12) NOT NULL AUTO_INCREMENT,
+  `n_content` longtext NOT NULL,
+  `user_from` varchar(200) NOT NULL,
+  `user_to` varchar(200) NOT NULL,
+  `type` varchar(200) NOT NULL,
+  `event_id` int(12) NOT NULL,
+  PRIMARY KEY (`n_id`),
+  KEY `user_eid` (`user_from`),
+  CONSTRAINT `notification_ibfk_2` FOREIGN KEY (`user_from`) REFERENCES `user` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+
+/*Data for the table `notification` */
+
+/*Table structure for table `user` */
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `firstname` varchar(100) NOT NULL,
+  `lastname` varchar(100) DEFAULT NULL,
+  `email` varchar(200) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `role` varchar(10) NOT NULL,
+  `college` varchar(150) NOT NULL,
+  `otp` varchar(6) DEFAULT NULL,
+  `place_id` int(12) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`email`),
+  KEY `place_id` (`place_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+
+/*Data for the table `user` */
+
+insert  into `user`(`firstname`,`lastname`,`email`,`password`,`role`,`college`,`otp`,`place_id`) values 
+('Hetal','Upadhyay','hetalupadhyay2002@gmail.com','12345678','Organizer','Mar Thoma Higher Secondary School',NULL,60),
+('Jasleen','Kaur Khanuja','jasleenkaurkhanuja03@gmail.com','7089332799','Organizer','Acropolis Institute of Technology and Research, Indore','507807',59);
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
