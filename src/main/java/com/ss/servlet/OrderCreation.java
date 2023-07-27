@@ -14,6 +14,7 @@ import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import com.ss.dao.eventdao;
 import com.ss.helper.connection_provider;
+import io.github.cdimascio.dotenv.Dotenv;
 /**
  *
  * @author 91700
@@ -29,6 +30,7 @@ public class OrderCreation extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -44,7 +46,8 @@ public class OrderCreation extends HttpServlet {
          RazorpayClient razorpayClient = null;
             String orderId=null;
             try(PrintWriter out = response.getWriter()){
-            razorpayClient = new RazorpayClient("rzp_test_TvUzjgsvhI2Zoq","Dsp598feTXK4nkGrzqcr1F4z");
+                Dotenv dotenv = Dotenv.load();
+            razorpayClient = new RazorpayClient(dotenv.get("API_KEY"),dotenv.get("API_SECRET"));
             System.out.println("hhhhhhhhhiiiiiiii");
 JSONObject options = new JSONObject();
 options.put("amount", 5000);
